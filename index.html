@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AARK Tuttions — Portal</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="logo">KJ</div>
+        <div class="brand-text">
+          <div class="title">AARK Tuttions</div>
+          <div class="subtitle">Parent / Student Portal</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-page="dashboard"><i class="fa-solid fa-gauge"></i> Dashboard</button>
+        <button class="nav-item" data-page="homework"><i class="fa-solid fa-book"></i> Homework</button>
+        <button class="nav-item" data-page="students"><i class="fa-solid fa-users"></i> Students</button>
+        <button class="nav-item" data-page="settings"><i class="fa-solid fa-gear"></i> Settings</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="role-toggle">
+          <label>Role</label>
+          <select id="roleSelect" aria-label="Role">
+            <option value="teacher">Teacher</option>
+            <option value="student">Student</option>
+          </select>
+        </div>
+        <button id="collapseBtn" class="collapse"><i class="fa-solid fa-angle-left"></i></button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <header class="topbar">
+        <div class="search">
+          <input id="searchInput" placeholder="Search homework, students..." />
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <div class="top-actions">
+          <div class="clock" id="clock"></div>
+          <div class="avatar"><i class="fa-solid fa-user"></i></div>
+        </div>
+      </header>
+
+      <section class="content" id="content">
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="page active">
+          <div class="grid">
+            <div class="card summary">
+              <div class="card-top">
+                <h3>Homework Due</h3>
+                <i class="fa-solid fa-calendar-day"></i>
+              </div>
+              <div class="card-value" id="summaryPending">0</div>
+              <p class="muted">Assignments pending submission</p>
+            </div>
+
+            <div class="card summary">
+              <div class="card-top">
+                <h3>Submitted</h3>
+                <i class="fa-solid fa-upload"></i>
+              </div>
+              <div class="card-value" id="summarySubmitted">0</div>
+              <p class="muted">Submitted but not yet checked</p>
+            </div>
+
+            <div class="card summary">
+              <div class="card-top">
+                <h3>Checked</h3>
+                <i class="fa-solid fa-check-circle"></i>
+              </div>
+              <div class="card-value" id="summaryChecked">0</div>
+              <p class="muted">Marked & returned</p>
+            </div>
+          </div>
+
+          <div class="card large">
+            <div class="card-header">
+              <h2>Recent Assignments</h2>
+              <button class="btn primary" onclick="navTo('homework')"><i class="fa-solid fa-plus"></i> New Assignment</button>
+            </div>
+            <div id="recentList" class="recent-list"></div>
+          </div>
+        </section>
+
+        <!-- HOMEWORK PAGE -->
+        <section id="homework" class="page">
+          <div class="card">
+            <div class="card-header">
+              <h2>All Homework</h2>
+              <div class="controls">
+                <label class="small">View</label>
+                <select id="viewMode" onchange="renderHomeworkTable()">
+                  <option value="table">Table</option>
+                  <option value="cards">Cards</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Upload panel (teacher only) -->
+            <div id="teacherPanel" class="upload-panel">
+              <input type="text" id="newHwTitle" placeholder="Homework title (e.g. Math - Fractions)" />
+              <input type="date" id="newHwDue" />
+              <input type="file" id="newHwFile" />
+              <button class="btn primary" onclick="handleNewHomework()">Upload Homework</button>
+            </div>
+
+            <div id="hwContainer" class="hw-container">
+              <!-- rendered by JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- STUDENTS PAGE -->
+        <section id="students" class="page">
+          <div class="card">
+            <h2>Students (Demo)</h2>
+            <p class="muted">This demo stores simple student names for submission tagging.</p>
+            <div class="student-list" id="studentList"></div>
+            <div class="mt">
+              <input id="newStudentName" placeholder="Add student name" />
+              <button class="btn" onclick="addStudent()">Add</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- SETTINGS PAGE -->
+        <section id="settings" class="page">
+          <div class="card">
+            <h2>Settings</h2>
+            <p class="muted">This demo uses local browser storage. Clearing site data will remove saved files.</p>
+            <button class="btn danger" onclick="clearAll()">Reset Demo Data</button>
+          </div>
+        </section>
+
+      </section>
+
+      <footer class="footer">
+        <small>Made with ❤️ — AARK Tuttions Portal (demo)</small>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Modals -->
+  <div id="modal" class="modal hidden" role="dialog" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
